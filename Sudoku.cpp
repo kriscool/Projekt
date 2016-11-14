@@ -1,7 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include <string>
 #include <iostream>
-#include "digitrecognizer.h"
 
 using namespace cv;
 using namespace std;
