@@ -6,46 +6,22 @@
  */
 
 #include "SudokuMatrix.h"
+#define SIZE 9
 
 SudokuMatrix::SudokuMatrix() {
-	// TODO Auto-generated constructor stub
-	this->size = 9;
-	for(int i = 0; i < size; i++){
-		for(int j = 0; j < size; j++){
-			this->matrix[i][j] = 0;
-		}
-	}
-}
-
-SudokuMatrix::SudokuMatrix(int size){
-	this->size = size;
-	for(int i = 0; i < size; i++){
-		for(int j = 0; j < size; j++){
+	for(int i = 0; i < SIZE; i++){
+		for(int j = 0; j < SIZE; j++){
 			this->matrix[i][j] = 0;
 		}
 	}
 }
 
 SudokuMatrix::SudokuMatrix(int tab[9][9]){
-	this->size = 9;
-	for(int i = 0; i < size; i++){
-		for(int j = 0; j < size; j++){
+	for(int i = 0; i < SIZE; i++){
+		for(int j = 0; j < SIZE; j++){
 			this->matrix[i][j] = tab[i][j];
 		}
 	}
 }
 
-SudokuMatrix::SudokuMatrix(int size, int tab[9][9]){
-	this->size = size;
-	for(int i = 0; i < size; i++){
-		for(int j = 0; j < size; j++){
-			this->matrix[i][j] = tab[i][j];
-		}
-	}
-}
-
-SudokuMatrix::~SudokuMatrix() {
-	// TODO Auto-generated destructor stub
-
-}
 

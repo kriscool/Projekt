@@ -5,20 +5,15 @@
  *      Author: Admin
  */
 
-#ifndef SUDOKUMATRIX_H_
-#define SUDOKUMATRIX_H_
+#pragma once
+#define SIZE 9
 
 class SudokuMatrix {
 
 public:
-	int size;
-	int matrix[9][9];
+	int matrix[SIZE][SIZE];
 
 	SudokuMatrix();
-	SudokuMatrix(int size);
-	SudokuMatrix(int tab[9][9]);
-	SudokuMatrix(int size, int tab[9][9]);
-	virtual ~SudokuMatrix();
+	SudokuMatrix(int tab[SIZE][SIZE]);
 };
 
-#endif /* SUDOKUMATRIX_H_ */
