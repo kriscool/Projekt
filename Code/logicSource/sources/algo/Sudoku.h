@@ -1,4 +1,4 @@
-#include "../SudokuMatrix/SudokuMatrix.h"
+#include "SudokuMatrix.h"
 #pragma once
 #define SIZE 9
 

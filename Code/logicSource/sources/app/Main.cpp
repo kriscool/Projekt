@@ -1,5 +1,5 @@
-#include "../algo/Sudoku/Sudoku.h"
-#include "../algo/SudokuMatrix/SudokuMatrix.h"
+#include "Sudoku.h"
+#include "SudokuMatrix.h"
 #include <iostream>
 #define SIZE 9
 #define UNASSIGNED 0
