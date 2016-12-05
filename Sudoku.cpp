@@ -31,7 +31,7 @@ void mergeRelatedLines(vector<Vec2f> *lines, Mat &img)
          float p1 = (*current)[0];
         float theta1 = (*current)[1];
         
-                Point pt1current, pt2current;
+        Point pt1current, pt2current;
         if(theta1>CV_PI*45/180 && theta1<CV_PI*135/180)
         {
             pt1current.x=0;
@@ -94,11 +94,17 @@ void mergeRelatedLines(vector<Vec2f> *lines, Mat &img)
     }
 }
 
+String inttostr(int input)
+{
+       stringstream ss;
+       ss << input;
+       return ss.str();
+}
 
 
 int main()
 {
-    Mat sudoku = imread("Materialy/Zdjecia/Najlepsza/Scan/sudoku1.jpg", 0);
+    Mat sudoku = imread("Materialy/Zdjecia/Najlepsza/Zdjecia/1.jpg", 0);
     Mat outerBox = Mat(sudoku.size(), CV_8UC1);
     Mat kernel = (Mat_<uchar>(3,3) << 0,1,0,1,1,1,0,1,0);
     GaussianBlur(sudoku, sudoku, Size(11, 11), 0, 0);
@@ -128,8 +134,8 @@ int main()
             }
         }
 
-    }
-
+    }    
+             
     floodFill(outerBox, maxPt, CV_RGB(255,255,255));
     for(int y=0;y<outerBox.size().height;y++)
     {
@@ -143,6 +149,7 @@ int main()
         }
     }
     
+    
     vector<Vec2f> lines;
     HoughLines(outerBox, lines, 1, CV_PI/180,  350, 0, 0 );
 
@@ -152,7 +159,7 @@ int main()
     Vec2f bottomEdge = Vec2f(-1000,-1000);        double bottomYIntercept=0, bottomXIntercept=0;
     Vec2f leftEdge = Vec2f(1000,1000);    double leftXIntercept=100000, leftYIntercept=0;
     Vec2f rightEdge = Vec2f(-1000,-1000);        double rightXIntercept=0, rightYIntercept=0;
-  cout<<lines.size();
+
      for(int i=0;i<lines.size();i++)
     {
 
@@ -291,22 +298,52 @@ int main()
     src[2] = ptBottomRight;        dst[2] = Point2f(maxLength-1, maxLength-1);
     src[3] = ptBottomLeft;        dst[3] = Point2f(0, maxLength-1);
 
-    int i;
-    for(i=0;i<4;i++)
-    cout<<src[i];
-    cout<<maxLength;
-
     Mat undistorted = Mat(Size(maxLength, maxLength), CV_8UC1);
 
     cv::warpPerspective(sudoku, undistorted, cv::getPerspectiveTransform(src, dst), Size(maxLength, maxLength));
 
     Mat undistortedThreshed = undistorted.clone();
     adaptiveThreshold(undistorted, undistortedThreshed, 255, CV_ADAPTIVE_THRESH_GAUSSIAN_C, CV_THRESH_BINARY_INV, 101, 1);
-
-    erode(outerBox, outerBox, kernel);
-
+    
     imshow("thresholded", undistortedThreshed);
-
     waitKey(0);
+    
+    int dist = ceil((double)maxLength/9)-2;
+    Mat currentCell = Mat(dist, dist, CV_8UC1);
+
+     vector<int> compression_params;
+     compression_params.push_back(CV_IMWRITE_JPEG_QUALITY);
+     compression_params.push_back(100);
+     int photocount = 0;
+     String imagename;
+     
+    
+    for(int j=0;j<9;j++) {
+       for(int i=0;i<9;i++) {
+           for(int y=0;y<dist && j*dist+y<undistortedThreshed.cols;y++)
+           {
+               uchar* ptr = currentCell.ptr(y);
+               for(int x=0;x<dist && i*dist+x<undistortedThreshed.rows;x++)
+               {
+                 ptr[x] = undistortedThreshed.at<uchar>(j*dist+y, i*dist+x);
+               }
+           }
+           Moments m = cv::moments(currentCell, true);
+           int area = m.m01;
+           if(area > currentCell.rows*currentCell.cols/5)
+           {
+                  photocount++;
+                  imagename = "digits/digit" + inttostr(photocount) + ".jpg"; //zapis do pliku
+                  imwrite(imagename, currentCell, compression_params);
+                  
+           }
+        }      
+    }
+    
+   // erode(outerBox, outerBox, kernel);
+   // imshow("thresholded", undistortedThreshed);
+   // waitKey(0);
+
     return 0;
+    
 }
