@@ -164,8 +164,8 @@ String inttostr(int input)
 
 int main()
 {
-	Mat sudoku = imread("C:\\Users\\kriscool\\Desktop\\skan4.png", 0);
-	Mat zrodlo = imread("C:\\Users\\kriscool\\Desktop\\skan4.png", 1);
+	Mat sudoku = imread("dzialajace/3.jpg", 0);
+	Mat zrodlo = imread("dzialajace/3.jpg", 1);
 	Mat src_gray;
 	cvtColor(zrodlo, src_gray, CV_BGR2GRAY);
 	Mat outerBox = Mat(sudoku.size(), CV_8UC1);
@@ -350,12 +350,23 @@ int main()
 
 	Point2f src[4], dst[4];
 
-	length = (length + maxLength) / 2;
-	src[0] = bL;
-	src[1] = bR;
-	src[2] = tR;
-	src[3] = tL;
-	//cout<<"ROGI";
+	if((tR.x - ptTopRight.x) > 8 ||  (ptTopRight.x - tR.x) > 8) {
+            length = maxLength;
+            
+            src[3] = ptBottomLeft;  
+            src[2] = ptBottomRight; 
+            src[1] = ptTopRight;
+            src[0] = ptTopLeft; 
+   //         cout<<"LINIE";
+        }
+        else {
+            length = (length + maxLength)/2;
+            src[0] = bL;
+            src[1] = bR;
+            src[2] = tR;
+            src[3] = tL;
+ //           cout<<"ROGI";
+        }
 
 
 	dst[0] = Point2f(0, 0);
@@ -370,9 +381,10 @@ int main()
 	Mat undistortedThreshed = undistorted.clone();
 	adaptiveThreshold(undistorted, undistortedThreshed, 255, CV_ADAPTIVE_THRESH_GAUSSIAN_C, CV_THRESH_BINARY_INV, 101, 1);
 
-	int dist = ceil((double)length / 9) - 1;
+	int dist = ceil((double)length / 9);
 	Mat currentCell = Mat(dist, dist, CV_8UC1);
-
+        Mat newCell = Mat(dist-5, dist-5, CV_8UC1);
+        
 	vector<int> compression_params;
 	compression_params.push_back(CV_IMWRITE_JPEG_QUALITY);
 	compression_params.push_back(100);
@@ -396,23 +408,33 @@ int main()
 			if (area > currentCell.rows*currentCell.cols / 5)
 			{
 				photocount++;
-				imagename = "C:\\Users\\kriscool\\Desktop\\Wycinka\\" + inttostr(photocount) + ".jpg"; //sciezka do zapisu pliku
-
-				for (int k = currentCell.rows - 13; k<currentCell.rows; k++)
-					floodFill(currentCell, Point(k, k), CV_RGB(0, 0, 0));
-				for (int k = currentCell.cols - 13; k<currentCell.cols; k++)
-					floodFill(currentCell, Point(k, k), CV_RGB(0, 0, 0));
-				for (int k = 0; k<currentCell.rows - (currentCell.rows - 14); k++)
-					floodFill(currentCell, Point(k, k), CV_RGB(0, 0, 0));
-				for (int k = 0; k<currentCell.cols - (currentCell.cols - 14); k++)
-					floodFill(currentCell, Point(k, k), CV_RGB(0, 0, 0));
-
-				imwrite(imagename, currentCell, compression_params);
+				imagename = "digits/digit" + inttostr(photocount) + ".jpg"; //sciezka do zapisu pliku
+                               
+                                
+                                for (int k = currentCell.rows - 14; k<currentCell.rows; k++) {                                   
+                                    floodFill(currentCell, Point(k, k), CV_RGB(0, 0, 0));
+                                    floodFill(currentCell, cvPoint(0, k), cvScalar(0,0,0));
+                                    floodFill(currentCell, cvPoint(currentCell.cols-1, i), cvScalar(0,0,0));
+                                    floodFill(currentCell, cvPoint(k, 0), cvScalar(0));
+                                    floodFill(currentCell, cvPoint(i, currentCell.rows-1), cvScalar(0));
+                                    
+                                }
+				for (int k = 0; k<currentCell.rows - (currentCell.rows - 14); k++){
+                                    floodFill(currentCell, Point(k, k), CV_RGB(0, 0, 0));
+                                    floodFill(currentCell, cvPoint(0, k), cvScalar(0,0,0));
+                                    floodFill(currentCell, cvPoint(currentCell.cols-1, i), cvScalar(0,0,0));
+                                    floodFill(currentCell, cvPoint(k, 0), cvScalar(0));
+                                    floodFill(currentCell, cvPoint(i, currentCell.rows-1), cvScalar(0));
+                                }
+                                Rect myRoi(1, 1, dist-2, dist-2);
+                                Mat croppedImage;
+                                Mat(currentCell, myRoi).copyTo(croppedImage);
+                                
+                                imwrite(imagename, croppedImage, compression_params);
 
 			}
 		}
 	}
-
 
 	return 0;
 }
