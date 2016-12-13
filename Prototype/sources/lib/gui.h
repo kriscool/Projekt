@@ -1,5 +1,6 @@
 #include <QtWidgets>
 #include <QDialog>
+#include <qstring.h>
 #include "SudokuMatrix.h"
 
 #define SIZE 9

@@ -2,7 +2,7 @@
 
 GUI::GUI(SudokuMatrix scanned, SudokuMatrix result){
 
-	createGridGroupBox(scanned);
+	createGridGroupBox(scanned, result);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 	mainLayout->addWidget(gridGroupBox);
@@ -26,5 +26,5 @@ void GUI::createGridGroupBox(SudokuMatrix scanned, SudokuMatrix result){
 }
 
 void GUI::handleButton(int i, int j, int x) {
-	buttons[i][j]->setText(x);
+	buttons[i][j]->setText(QString(x));
 }

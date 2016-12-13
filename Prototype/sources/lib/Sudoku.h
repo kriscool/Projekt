@@ -5,14 +5,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-using namespace cv;
-using namespace std;
 
 class SudokuRead{
 public:
-	void cornerHarris_demo(int, void*, Mat src, Mat src_gray);
-	void drawLine(Vec2f line, Mat &img, Scalar rgb = CV_RGB(0, 0, 255));
-	void mergeRelatedLines(vector<Vec2f> *lines, Mat &img);
-	String inttostr(int input);
+	void cornerHarris_demo(int, void*, cv::Mat src, cv::Mat src_gray);
+	void drawLine(cv::Vec2f line, cv::Mat &img, cv::Scalar rgb);
+	void mergeRelatedLines(std::vector<cv::Vec2f> *lines, cv::Mat &img);
+	cv::String inttostr(int input);
 	int go();
 };
