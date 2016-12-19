@@ -1,4 +1,4 @@
-#include <opencv2/opencv.hpp>
+ï»¿#include <opencv2/opencv.hpp>
 #include <string>
 #include <iostream>
 #include <stdio.h>
@@ -162,9 +162,10 @@ String inttostr(int input)
 	return ss.str();
 }
 
-void zapis(){
-	Mat sudoku = imread("C:\\Users\\kriscool\\Desktop\\Projekt\\Materialy\\Zdjêcia\\Najlepsza jakoœæ\\Skany\\Skan (5).jpg", 0);
-	Mat zrodlo = imread("C:\\Users\\kriscool\\Desktop\\Projekt\\Materialy\\Zdjêcia\\Najlepsza jakoœæ\\Skany\\Skan (5).jpg", 1);
+void zapis() {
+
+	Mat sudoku = imread("C:\\Users\\kriscool\\Desktop\\Skan (5).jpg", 0);
+	Mat zrodlo = imread("C:\\Users\\kriscool\\Desktop\\Skan (5).jpg", 1);
 	Mat src_gray;
 	cvtColor(zrodlo, src_gray, CV_BGR2GRAY);
 	Mat outerBox = Mat(sudoku.size(), CV_8UC1);

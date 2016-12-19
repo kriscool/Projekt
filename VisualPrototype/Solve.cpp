@@ -112,15 +112,33 @@ void rozpisz() {
 	}
 }
 
+
+void rozbij() {
+	for (int w = 0; w < 9; w++) {
+		for (int k = 0; k < 9; k++) {
+			gridTemp[w * 9 + k] = grid[w][k];
+		}
+	}
+}
+
 void solve()
 {
-	
+
 	rozpisz();
 	if (SolveSudoku(grid) == true) {
-		printGrid(grid);
+		rozbij();
 		cout << " Good " << endl;
 	}
 	else
 		cout << "No solution exists" << endl;
 	cin.get();
+}
+
+
+
+
+
+int przekaz(int index) {
+	int des = gridTemp[index];
+	return des;
 }

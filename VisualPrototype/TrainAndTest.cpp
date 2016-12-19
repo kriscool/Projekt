@@ -166,8 +166,8 @@ int read(int a) {
 
 int push(int a) {
 	int wynik;
-		wynik = read(a);
-	
-		
+	wynik = read(a);
+
+
 	return wynik;
 }
