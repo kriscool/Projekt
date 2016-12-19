@@ -7,5 +7,6 @@ typedef struct MyStruct
 }s1;
 int push(int);
 void zapis();
-int solve(int);
+void wypelnij(int);
+void solve();
 #endif

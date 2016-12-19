@@ -11,18 +11,15 @@ int main()
 	zapis();
 	for (int i = 1; i <82; i++) {
 			macierzIN[i-1] = push(i);
+			wypelnij(macierzIN[i - 1]);
 			cout << macierzIN[i-1] << " ";
 			if (i % 9 == 0) {
 				cout << "\n";
 			}
 	}
 
-	for (int i = 0; i < 9; i++) {
-		for (int j = 0; j < 9; j++) {
-			macierzIN2[i][j] = macierzIN[i * 9 + j];
-		}
-	}
-	solve(macierzIN2);
+	solve();
+	
 	getchar();
 
 	return 0;
